@@ -1,0 +1,22 @@
+{
+  "data_identity": "aa0eb9e41b88a169a421cc8d24b6bc98a870e955e869442a2d2aaa8c61a9a9ed",
+  "annotation_identity": "74094c4d7f81581d116f96f4a0f8923b83e42fe36d53104091166fedaf1d5017",
+  "bank_columns": 1608027,
+  "training_demos": 7200,
+  "validation_demos": 400,
+  "test_demos": 400,
+  "text_encoder": {
+    "model": "sentence-transformers/paraphrase-MiniLM-L3-v2",
+    "revision": "4ca70771034acceecb2e72475f72050fcdde4ddc",
+    "pooling": "attention_mask_mean_l2",
+    "max_length": 128,
+    "truncated_texts": 0
+  },
+  "split_seed": 20261104,
+  "reward_scales": {
+    "action_mse": 0.46851125606846916,
+    "reconstruction_mse": 0.03209196240077801
+  },
+  "fisher_sha256": "e46f87c8d54fcffc6b4d88e052424be00cf16f8a65c1ee16a8e35370a1222864",
+  "annotation_cache_sha256": "08763abc5c0b2f7dcc03777deecbdcff3cf6953b3ec6b2a805a4f5598875e23d"
+}

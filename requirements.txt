@@ -1,0 +1,4 @@
+torch==2.10.0
+numpy==2.3.5
+scipy==1.18.1
+transformers>=4.40,<5

@@ -1,0 +1,111 @@
+{
+  "data": {
+    "realization_seed": 0,
+    "demonstrations": 1000,
+    "state_key": "Xro",
+    "action_key": "Uro",
+    "feature_keys": [
+      "r3m_agent",
+      "r3m_wrist"
+    ],
+    "cameras": [
+      "agentview_rgb",
+      "eye_in_hand_rgb"
+    ],
+    "image_size": 224,
+    "r3m": {
+      "model": "resnet18",
+      "feature_dim": 512,
+      "resize": 224,
+      "batch_size": 512,
+      "device": "cuda"
+    }
+  },
+  "method": {
+    "device": "cuda",
+    "dtype": "float64",
+    "state_dim": 1033,
+    "action_dim": 7,
+    "history": 10,
+    "scaling": {
+      "enabled": true,
+      "standard_deviation_correction": {
+        "state": 0,
+        "action": 1
+      },
+      "minimum_standard_deviation": 1e-06,
+      "block_normalize": false
+    },
+    "temporal_neighbors": {
+      "lookback": 10,
+      "candidates": 50,
+      "keep_ratio": 0.86,
+      "decay": -0.3658387314461997,
+      "fit_batch_size": 64
+    },
+    "rff": {
+      "features": 16384,
+      "dtype": "float32",
+      "storage": "host_paged",
+      "refine_steps": 4,
+      "refine_tolerance": 5e-06,
+      "sigma_scale": 0.5,
+      "ridge": 0.1,
+      "seed": 0,
+      "feature_pool_chunk_elements": 2000000
+    },
+    "g": {
+      "supports": 64,
+      "constraint": "affine",
+      "fit_dtype": "float32",
+      "state_offset": 1,
+      "l1": 0,
+      "solver": "exact",
+      "lookup_rates": [
+        0.5,
+        0.75,
+        1,
+        1.5,
+        2
+      ],
+      "lda": {
+        "features": 16384,
+        "anchors": 8192,
+        "shrinkage": 1,
+        "sigma_scale": 1,
+        "seed": 0,
+        "fisher_rank": 70,
+        "teacher": "sparsemax",
+        "adaptive_support": "coverage",
+        "teacher_distance_scale": "radius",
+        "teacher_storage": "host"
+      },
+      "align_history": true,
+      "align_future": true,
+      "rate_scaled_action_dims": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "temporal_support_screen": true
+    },
+    "residual": {
+      "lookup": "g_supports",
+      "target_batch_size": 768,
+      "variance_floor": 1e-08,
+      "action_source": "retimed_first",
+      "target_retrieval_precision": "mixed",
+      "target_execution": "batched"
+    },
+    "spc": {
+      "horizon": 10,
+      "dynamics_state_dims": 9,
+      "ridge": 1,
+      "tracking_weight": 1,
+      "prior_weight": 10
+    }
+  }
+}

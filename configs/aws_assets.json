@@ -1,0 +1,6 @@
+{
+  "banks": "/home/ubuntu/pi05-geometry-analysis/deployed_supports/inputs/r3m/banks",
+  "annotations": "/home/ubuntu/bpc-summary-retrieval-20261104/cache/annotations.pt",
+  "fisher": "/home/ubuntu/bpc-summary-retrieval-20261104/convergence-mc16-1024/fisher-reference/fisher.pt",
+  "fisher-cache": "/home/ubuntu/bpc-summary-retrieval-20261104/multiobjective-12h-20261110/cache/fisher-keys.pt"
+}

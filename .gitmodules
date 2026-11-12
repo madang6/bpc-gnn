@@ -1,0 +1,3 @@
+[submodule "vendor/bpc"]
+	path = vendor/bpc
+	url = https://github.com/madang6/bpc-multi.git
