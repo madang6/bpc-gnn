@@ -69,5 +69,3 @@ def reinforce_loss(log_probability, rewards):
     rewards = rewards.detach()
     baseline = (rewards.sum() - rewards) / (len(rewards) - 1)
     return -((rewards - baseline) * log_probability).mean()
-
-

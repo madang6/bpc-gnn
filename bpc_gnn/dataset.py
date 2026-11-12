@@ -142,4 +142,3 @@ class DemonstrationBank:
         if query.exclude_demo is None:
             return self.columns
         return self.columns[self.policy.hankel_trajectory != query.exclude_demo]
-
