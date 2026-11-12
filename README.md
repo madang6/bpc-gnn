@@ -4,7 +4,7 @@ Task-conditioned, future-informed retrieval for Behavior Predictive Control (BPC
 
 ## Problem formulation
 
-Consider task-conditioned MDPs $`\mathcal{M}_c=(\mathcal{X},\mathcal{U},P_c,r_c,\gamma)`$ with observations $`y^{(t)}=f_y(x^{(t)})`$ and expert demonstrations $`\mathcal{D}=\bigcup_c\mathcal{D}_c`$. Following Adang et al., *Training-free Behavior Cloning*, §III, a query and its trajectory-template library are
+Consider task-conditioned MDPs $`\mathcal{M}_c=(\mathcal{X},\mathcal{U},P_c,r_c,\gamma)`$ with observations $`y^{(t)}=f_y(x^{(t)})`$ and expert demonstrations $`\mathcal{D}=\bigcup_c\mathcal{D}_c`$. Following [Adang et al., *Training-free Behavior Cloning*](https://trainingfreebehaviorcloning.github.io/), §III, a query and its trajectory-template library are
 
 ```math
 z^{(t)}=\mathrm{col}\!\left(u^{(t-T_{\mathrm{ini}}:t-1)},y^{(t-T_{\mathrm{ini}}+1:t)}\right),
