@@ -4,38 +4,38 @@ Task-conditioned, future-informed retrieval for Behavior Predictive Control (BPC
 
 ## Problem formulation
 
-Consider task-conditioned MDPs $\mathcal M_c=(\mathcal X,\mathcal U,P_c,r_c,\gamma)$ with observations $y^{(t)}=f_y(x^{(t)})$ and expert demonstrations $\mathcal D=\bigcup_c\mathcal D_c$. Following Adang et al., *Training-free Behavior Cloning*, §III, a query and its trajectory-template library are
+Consider task-conditioned MDPs $`\mathcal{M}_c=(\mathcal{X},\mathcal{U},P_c,r_c,\gamma)`$ with observations $`y^{(t)}=f_y(x^{(t)})`$ and expert demonstrations $`\mathcal{D}=\bigcup_c\mathcal{D}_c`$. Following Adang et al., *Training-free Behavior Cloning*, §III, a query and its trajectory-template library are
 
-$$
+```math
 z^{(t)}=\operatorname{col}\!\left(u^{(t-T_{\mathrm{ini}}:t-1)},y^{(t-T_{\mathrm{ini}}+1:t)}\right),
-\qquad H_{\mathcal D}=\begin{bmatrix}H\\U\end{bmatrix}.
-$$
+\qquad H_{\mathcal{D}}=\begin{bmatrix}H\\U\end{bmatrix}.
+```
 
-Each column pairs a demonstrated history $h_i$ with its future-action continuation $u_i^+$. The objective is to construct a task-conditioned policy $\hat\pi_{\mathcal D}(z,c)$ to estimate the expert's next action $u^{(t),\star}$.
+Each column pairs a demonstrated history $`h_i`$ with its future-action continuation $`u_i^+`$. The objective is to construct a task-conditioned policy $`\hat{\pi}_{\mathcal{D}}(z,c)`$ to estimate the expert's next action $`u^{(t),\star}`$.
 
 ## Retrieval and action continuation
 
-A GNN passes messages between candidate histories and 32 query-conditioned summary nodes. Task instructions and recorded candidate-continuation captions supply semantic features. Its output adds learned score corrections to pooled sparsemax-LDA retrieval. Adaptive sparsemax selects the neighborhood $\mathcal N$ at evaluation.
+A GNN passes messages between candidate histories and 32 query-conditioned summary nodes. Task instructions and recorded candidate-continuation captions supply semantic features. Its output adds learned score corrections to pooled sparsemax-LDA retrieval. Adaptive sparsemax selects the neighborhood $`\mathcal{N}`$ at evaluation.
 
-For the retrieved banks $H_{\mathcal N},U_{\mathcal N}$, the affine continuation prior is
+For the retrieved banks $`H_{\mathcal{N}},U_{\mathcal{N}}`$, the affine continuation prior is
 
-$$
-g^\star\in\arg\min_{\mathbf{1}^\top g=1}\frac12\|H_{\mathcal N}g-z\|_2^2,
-\qquad \hat u_f=U_{\mathcal N}g^\star,
-\qquad G(z,c)=A_{\mathcal N}g^\star,
-$$
+```math
+g^{\star}\in\operatorname*{arg\,min}_{\mathbf{1}^{\top} g=1}\frac{1}{2}\|H_{\mathcal{N}}g-z\|_2^2,
+\qquad \hat{u}_f=U_{\mathcal{N}}g^{\star},
+\qquad G(z,c)=A_{\mathcal{N}}g^{\star},
+```
 
-where $A_{\mathcal N}=U_{\mathcal N}^{(1)}$ contains the first future action. This configuration uses the paper's Eq. (6) with $\lambda_g=0$.
+where $`A_{\mathcal{N}}=U_{\mathcal{N}}^{(1)}`$ contains the first future action. This configuration uses the paper's Eq. (6) with $`\lambda_g=0`$.
 
-An offline policy gradient trains the retrieval distribution $p_\theta(\mathcal N\mid z,c,\mathcal D)$ using demonstrated continuations $u_f^\star$,
+An offline policy gradient trains the retrieval distribution $`p_\theta(\mathcal{N}\mid z,c,\mathcal{D})`$ using demonstrated continuations $`u_f^{\star}`$,
 
-$$
-\max_\theta\;\mathbb E_{(z,u_f^\star,c)\sim\mathcal D,\;\mathcal N\sim p_\theta}
-\left[-\frac{\operatorname{MSE}(U_{\mathcal N}g^\star,u_f^\star)}{C_u}
-      -\frac{\operatorname{MSE}(H_{\mathcal N}g^\star,z)}{C_z}\right].
-$$
+```math
+\max_\theta\;\mathbb{E}_{(z,u_f^{\star},c)\sim\mathcal{D},\;\mathcal{N}\sim p_\theta}
+\left[-\frac{\operatorname{MSE}(U_{\mathcal{N}}g^{\star},u_f^{\star})}{C_u}
+      -\frac{\operatorname{MSE}(H_{\mathcal{N}}g^{\star},z)}{C_z}\right].
+```
 
-Here $C_u,C_z$ are training-only Fisher error scales. Training samples nonempty Bernoulli neighborhoods with adaptive cardinality and a leave-one-out reward baseline. Batches are task-balanced, and each training query's entire demonstration is excluded from retrieval. Evaluation reports deterministic and sampled action/reconstruction errors by task.
+Here $`C_u,C_z`$ are training-only Fisher error scales. Training samples nonempty Bernoulli neighborhoods with adaptive cardinality and a leave-one-out reward baseline. Batches are task-balanced, and each training query's entire demonstration is excluded from retrieval. Evaluation reports deterministic and sampled action/reconstruction errors by task.
 
 ## Run
 
@@ -58,4 +58,4 @@ python -m bpc_gnn.evaluate "${inputs[@]}" \
 python -m unittest discover -s tests -v
 ```
 
-Use Bash and a CUDA-enabled PyTorch installation. Training accepts `--config`, `--seed`, `--steps`, and `--resume`. The defaults use $T_{\mathrm{ini}}=T_f=10$. Recalibrate $C_u,C_z$ when changing the bank or Fisher model. Full-bank extraction parity is recorded in the validation receipt. [Parity check](validation/real-bank-parity.json)
+Use Bash and a CUDA-enabled PyTorch installation. Training accepts `--config`, `--seed`, `--steps`, and `--resume`. The defaults use $`T_{\mathrm{ini}}=T_f=10`$. Recalibrate $`C_u,C_z`$ when changing the bank or Fisher model. Full-bank extraction parity is recorded in the validation receipt. [Parity check](validation/real-bank-parity.json)
